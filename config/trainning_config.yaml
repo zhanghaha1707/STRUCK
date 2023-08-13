@@ -1,0 +1,542 @@
+# Related settings for training and attacking
+#========
+raw_data_path: 
+  dev: ../data/dev/dev_raw.pkl
+  test: ../data/test/test_raw.pkl
+  train: ../data/train/train_raw.pkl
+vocab_set:
+  load_path: ../data/vocab/basic_vocab.pkl
+  tbcnn_load_path: ../data/vocab/tbcnn_vocab.pkl
+  astnn_load_path: ../data/vocab/astnn_vocab_w2v_128
+  ggnn_load_path: ../data/vocab/ggnn_vocab
+  ggnn_s_load_path: ../data/vocab/ggnn_vocab
+  vocab_size: 5000
+  tbcnn_vocab_size: 5050
+#=============basic_setting============
+seed: 2022
+device: 1
+#============RNN=====================
+lstm:
+  # 描述
+  Describtion: add mask and use max to get a code's representation
+  # 数据路径
+  train: ../data/train/train_lstm.pkl
+  enhance_path: ../data/adv/lstm
+  # enhance_size: None
+  dev: ../data/dev/dev_lstm.pkl
+  test: ../data/test/test_lstm.pkl
+  log_path: ../save/train/lstm/train_log.log 
+  model_path: ../save/train/lstm
+  load_path: ../save/train/lstm/best.pt
+  adv_load_path: ../save/train/lstm/best_adv.pt
+  
+  optimizer: Adam
+  loss_func: CrossEntropy
+  learning_rate: 1e-3 
+  learning_rate_decay: False 
+  warmup_steps: 5
+  attention: True 
+  l2p: 1e-8 
+  
+  vocab_size: 5000
+  embedding_size: 512
+  hidden_size: 600
+  n_layers: 2 
+  num_classes: 104
+  max_len: 300
+  atten_dropout: 0.3
+  encoder_dropout: 0
+  attn: False
+  brnn: True
+  batch_first: True
+
+  do_train: True 
+  do_test: True 
+  do_val: True
+  epochs: 40
+  patiences: 10 
+  train_batch_size: 32
+  eval_batch_size: 8
+  gradient_accumulation_steps: 1
+  save_steps: 1000
+  save_eval_acc: 0 #0.9684
+  save_test_acc: 0.9667
+
+gru:
+  
+  Describtion: same with lstm
+  train: ../data/train/train_lstm.pkl
+  enhance_path: ../data/adv/gru
+  dev: ../data/dev/dev_lstm.pkl
+  test: ../data/test/test_lstm.pkl
+  log_path: ../save/train/gru/train_log.log 
+  model_path: ../save/train/gru
+  load_path: ../save/train/gru/best.pt
+  adv_load_path: ../save/train/gru/best_adv.pt
+  
+  optimizer: Adam
+  loss_func: CrossEntropy
+  learning_rate: 1e-3 
+  learning_rate_decay: False 
+  warmup_steps: 5
+  attention: True #
+  l2p: 1e-8 
+  
+  vocab_size: 5000
+  embedding_size: 512
+  hidden_size: 600
+  n_layers: 2 # 层数
+  num_classes: 104
+  max_len: 300
+  atten_dropout: 0.3
+  encoder_dropout: 0
+  attn: False
+  brnn: True
+  batch_first: True
+  
+  do_train: True 
+  do_test: True 
+  do_val: True
+  epochs: 40
+  train_batch_size: 32
+  eval_batch_size: 8
+  patiences: 10 
+  gradient_accumulation_steps: 1
+  save_steps: 1000
+  save_eval_acc: 0 # 0.9683 # 0.9671
+  save_test_acc: 0.9668
+
+#===========using Struct information====
+tbcnn:
+ 
+  Describtion: Tree-based Convolutional Neural Networks
+  
+  train: ../data/train/train_tbcnn.pkl
+  enhance_path: ../data/adv/tbcnn
+  
+  dev: ../data/dev/dev_tbcnn.pkl
+  test: ../data/test/test_tbcnn.pkl
+  log_path: ../save/train/tbcnn/train_log.log 
+  model_path: ../save/train/tbcnn
+  load_path: ../save/train/tbcnn/best.pt
+  adv_load_path: ../save/train/tbcnn/best_adv.pt
+  
+  optimizer: Adam
+  loss_func: CrossEntropy
+  learning_rate: 1e-3 
+  learning_rate_decay: True 
+  warmup_steps: 5
+  attention: True 
+  l2p: 1e-8 
+  
+  vocab_size: 5050
+  embedding_size: 256
+  hidden_size: 256
+  num_layers: 1 
+  num_classes: 104
+  dropout_prob: 0.3
+  
+  do_train: True 
+  do_test: True 
+  do_val: True
+  epochs: 40
+  patiences: 10 
+  train_batch_size: 32
+  eval_batch_size: 8
+  gradient_accumulation_steps: 1
+  save_steps: 1000
+  save_eval_acc: 0
+  save_test_acc: 0.9363
+
+astnn:
+  
+  Describtion: A Novel Neural Source Code Representation ased on Abstract Syntax Tree
+  
+  train: ../data/train/train_astnn.pkl
+  enhance_path: ../data/adv/astnn
+  
+  dev: ../data/dev/dev_astnn.pkl
+  test: ../data/test/test_astcnn.pkl
+  log_path: ../save/train/astnn/train_log.log 
+  model_path: ../save/train/astnn
+  load_path: ../save/train/astnn/best.pt
+  adv_load_path: ../save/train/astnn/best_adv.pt
+
+  optimizer: Adamax
+  loss_func: CrossEntropy
+  learning_rate: 1e-5 
+  learning_rate_decay: True 
+  warmup_steps: 5
+  attention: True 
+  l2p: 1e-8 
+
+  vocab_size: 7224
+  hidden_dim: 100
+  encode_dim: 128
+  embedding_dim: 128
+  hidden_size: 256
+  num_layers:  
+  num_classes: 104
+  dropout_prob: 0.3
+  using_word2vec_embedding: False
+  word2vec:
+    vector_size: 128
+    workers: 16
+    sg: 1
+    min_count: 3
+
+  do_train: True 
+  do_test: True 
+  do_val: True
+  epochs: 40
+  patiences: 10 
+  train_batch_size: 16
+  eval_batch_size: 16
+  gradient_accumulation_steps: 1
+  save_steps: 1000
+  save_eval_acc: 0 
+  save_test_acc: 0.9585
+ggnn:
+ 
+  Describtion: ggnn
+  
+  train: ../data/train/train_ggnn.pkl
+  enhance_path: ../data/adv/ggnn
+  
+  dev: ../data/dev/dev_ggnn.pkl
+  test: ../data/test/test_ggnn.pkl
+  batches:
+    train: ../data/train/train_ggnn_batches.pkl
+    dev: ../data/dev/dev_ggnn_batches.pkl
+    test: ../data/test/test_ggnn_batches.pkl
+  log_path: ../save/train/ggnn/train_log.log 
+  model_path: ../save/train/ggnn
+  load_path: ../save/train/ggnn/best.pt
+  adv_load_path: ../save/train/ggnn/best_adv.pt
+  
+  word_embed_dim: 128
+  fix_word_embed: False
+  edge_embed_dim: 32
+  graph_hidden_size: 128
+  vocab_size: 7798 
+  min_word_freq: 3
+  embedding_size: 768
+  cut_and_pad: True
+  num_classes: 104
+ 
+  optimizer: Adam
+  loss_func: CrossEntropy
+  learning_rate: 5e-5 
+  learning_rate_decay: True 
+  warmup_steps: 5
+  l2p: 1e-8 
+  max_grad_norm: 1.0
+  # Regularization
+  word_dropout: 0.3
+  enc_rnn_dropout: 0.3
+  # Graph neural networks
+  graph_type: ggnn_bi 
+  bias: True 
+  gcn_dropout: 0.6
+  gat_dropout: 0.5
+  n_heads: 4
+  alpha: 0.01
+
+  graph_hops: 2        # 3 
+  graph_direction: 'all'    # 'all', 'forward', 'backward'
+  message_function: 'no_edge'   # 'edge_mm', 'edge_network', 'edge_pair', 'no_edge'
+  
+  code_info_type: 'local'     # local, global, all
+  heads: 2
+  
+  do_train: True 
+  do_test: True 
+  do_val: True
+  epochs: 100
+  patiences: 10 
+  batch_size: 1
+  eval_batch_size: 1
+  gradient_accumulation_steps: 4
+  save_steps: 20000
+  save_eval_acc: 0 
+  save_test_acc: 0 
+ggnn_simple:
+  
+  Describtion: ggnn
+  
+  train: ../data/train/train_ggnn.pkl
+  enhance_path: ../data/adv/ggnn
+  
+  dev: ../data/dev/dev_ggnn.pkl
+  test: ../data/test/test_ggnn.pkl
+  batches:
+    train: ../data/train/train_ggnn_batches.pkl
+    dev: ../data/dev/dev_ggnn_batches.pkl
+    test: ../data/test/test_ggnn_batches.pkl
+  log_path: ../save/train/ggnn/train_log.log 
+  model_path: ../save/train/ggnn
+  load_path: ../save/train/ggnn/best.pt
+  adv_load_path: ../save/train/ggnn/best_adv.pt
+  
+  word_embed_dim: 128
+  fix_word_embed: False
+  edge_embed_dim: 32
+  graph_hidden_size: 128
+  vocab_size: 7798 
+  min_word_freq: 3
+  embedding_size: 768
+  cut_and_pad: True
+  num_classes: 104
+ 
+  optimizer: Adam
+  loss_func: CrossEntropy
+  learning_rate: 5e-5 
+  learning_rate_decay: True 
+  warmup_steps: 5
+  l2p: 1e-8 
+  max_grad_norm: 1.0
+  # Regularization
+  word_dropout: 0.3
+  enc_rnn_dropout: 0.3
+  # Graph neural networks
+  graph_type: ggnn_bi #ggnn_bi #gcn #gcn #'ggnn_bi'       # ggnn_bi
+  bias: True 
+  gcn_dropout: 0.6
+  gat_dropout: 0.5
+  n_heads: 4
+  alpha: 0.01
+
+  graph_hops: 2        # 3 
+  graph_direction: 'all'    # 'all', 'forward', 'backward'
+  message_function: 'no_edge'   # 'edge_mm', 'edge_network', 'edge_pair', 'no_edge'
+  
+  code_info_type: 'local'     # local, global, all
+  heads: 2
+  
+  do_train: True 
+  do_test: True 
+  do_val: True
+  epochs: 100
+  patiences: 10 
+  batch_size: 1
+  eval_batch_size: 1
+  gradient_accumulation_steps: 4
+  save_steps: 20000
+  save_eval_acc: 0 #0.967
+  save_test_acc: 0 #0.9626
+#=============pretrain model============
+codebert:
+   
+  Describtion: codebert
+  model_name: microsoft/codebert-base
+ 
+  train: ../data/train/train_codebert.pkl
+  enhance_path: ../data/adv/codedebert
+  
+  dev: ../data/dev/dev_codebert.pkl
+  test: ../data/test/test_codebert.pkl
+  log_path: ../save/train/codebert/train_log.log 
+  model_path: ../save/train/codebert
+  load_path: ../save/train/codebert/best.pt
+  adv_load_path: ../save/train/codebert/best_adv.pt
+ 
+  input_len: 512
+  vocab_size: 50265  
+  embedding_size: 768
+  cut_and_pad: True
+  num_classes: 104
+  
+  optimizer: Adam 
+  loss_func: CrossEntropy
+  learning_rate: 5e-5 
+  learning_rate_decay: True 
+  warmup_steps: 5
+  l2p: 0 
+  
+  do_train: True 
+  do_test: True 
+  do_val: True
+  epochs: 40
+  patiences: 10 
+  train_batch_size: 8
+  eval_batch_size: 8
+  gradient_accumulation_steps: 1
+  save_steps: 1000
+  save_eval_acc: 0 
+  save_test_acc: 0.964 
+
+graphcodebert:
+   
+  Describtion: graphcodebert
+  model_name: microsoft/graphcodebert-base
+  
+  train: ../data/train/train_graphcodebert.pkl
+  enhance_path: ../data/adv/graphcodebert
+ 
+  dev: ../data/dev/dev_graphcodebert.pkl
+  test: ../data/test/test_graphcodebert.pkl
+  log_path: ../save/train/graphcodebert/train_log.log 
+  model_path: ../save/train/graphcodebert
+  load_path: ../save/train/graphcodebert/best.pt
+  adv_load_path: ../save/train/graphcodebert/best_adv.pt
+  pretrained_word_embed_file: 
+  
+  code_length: 256 
+  data_flow_length: 64
+  input_len: 512
+  vocab_size: 50265 
+  embedding_size: 768
+  cut_and_pad: True
+  num_classes: 104
+ 
+  optimizer: AdamW
+  loss_func: CrossEntropy
+  learning_rate: 1e-5 
+  learning_rate_decay: True 
+  warmup_steps: 5
+  l2p: 1e-8 
+  max_grad_norm: 1.0
+  
+  do_train: True 
+  do_test: True 
+  do_val: True
+  epochs: 40
+  patiences: 10 
+  train_batch_size: 8
+  eval_batch_size: 8
+  gradient_accumulation_steps: 1
+  save_steps: 1000
+  save_eval_acc: 0 # 0.9779 #0.9786
+  save_test_acc: 0.9792
+#=============rename attcak============
+node:
+  all_candidate_tokens: ../data/vocab/all_candidate_tokens.pkl 
+  all_candidate_rnn_tokens: ../data/vocab/all_candidate_rnn_tokens.pkl
+  all_candidate_tbcnn_tokens: ../data/vocab/all_candidate_tbcnn_tokens.pkl
+  all_candidate_astnn_tokens: ../data/vocab/all_candidate_astnn_tokens.pkl
+  all_candidate_codebert_tokens: ../data/vocab/all_candidate_codebert_tokens.pkl
+  all_candidate_graphcodebert_tokens: ../data/vocab/all_candidate_graphcodebert_tokens.pkl 
+  all_candidate_ggnn_tokens: ../data/vocab/all_candidate_ggnn_tokens.pkl 
+  forbidden_tokens: ../data/vocab/forbidden.py
+  log_path: ../save/attack/
+  adv_data_path: ../data/adv
+  succ_statistics_info_path: ../save/attack/
+  n_candidate: 30 
+  n_iter: 40  
+  is_enhance_data: False 
+  last_attack_code_idx: 0
+  last_attack_codes_nums: 0 
+  last_succ_times: 0 
+  last_total_time: 0 
+  last_total_invotions: 0 
+  last_advs_nums: 0 
+  last_total_changes_nums: 0 
+  log_write_mode: w 
+node_mhm:
+  all_candidate_tokens: ../data/vocab/all_candidate_tokens.pkl 
+  all_candidate_rnn_tokens: ../data/vocab/all_candidate_rnn_tokens.pkl
+  all_candidate_tbcnn_tokens: ../data/vocab/all_candidate_tbcnn_tokens.pkl
+  all_candidate_astnn_tokens: ../data/vocab/all_candidate_astnn_tokens.pkl
+  all_candidate_codebert_tokens: ../data/vocab/all_candidate_codebert_tokens.pkl
+  all_candidate_graphcodebert_tokens: ../data/vocab/all_candidate_graphcodebert_tokens.pkl 
+  all_candidate_ggnn_tokens: ../data/vocab/all_candidate_ggnn_tokens.pkl 
+  forbidden_tokens: ../data/vocab/forbidden.py
+  log_path: ../save/attack/
+  adv_data_path: ../data/adv
+  succ_statistics_info_path: ../save/attack/
+  n_candidate: 30 
+  n_iter: 40  
+  prob_threshold: 0.95 
+  candidate_mode: random 
+  is_enhance_data: False 
+  last_attack_code_idx: 0 
+  last_attack_codes_nums: 0 
+  last_total_changes_nums: 0
+  last_succ_times: 0 
+  last_total_time: 0 
+  last_total_invotions: 0 
+  last_advs_nums: 0 
+  log_write_mode: w 
+node_pretrain:
+  all_candidate_tokens: ../data/vocab/all_candidate_tokens.pkl 
+  all_candidate_rnn_tokens: ../data/vocab/all_candidate_rnn_tokens.pkl
+  all_candidate_tbcnn_tokens: ../data/vocab/all_candidate_tbcnn_tokens.pkl
+  all_candidate_astnn_tokens: ../data/vocab/all_candidate_astnn_tokens.pkl
+  all_candidate_codebert_tokens: ../data/vocab/all_candidate_codebert_tokens.pkl
+  all_candidate_graphcodebert_tokens: ../data/vocab/all_candidate_graphcodebert_tokens.pkl 
+  all_candidate_ggnn_tokens: ../data/vocab/all_candidate_ggnn_tokens.pkl
+  forbidden_tokens: ../data/vocab/forbidden.py
+  log_path: ../save/attack/
+  adv_data_path: ../data/adv
+  succ_statistics_info_path: ../save/attack/
+  n_candidate: 30 
+  n_iter: 40  
+  prob_threshold: 0.95 
+  candidate_mode: random 
+  is_enhance_data: False 
+  last_attack_code_idx: 0 
+  last_attack_codes_nums: 0 
+  last_total_changes_nums: 0
+  last_succ_times: 0 
+  last_total_time: 0 
+  last_total_invotions: 0 
+  last_advs_nums: 0 
+  log_write_mode: w 
+#============struct attack================
+struct:
+  log_path: ../save/attack/
+  adv_data_path: ../data/adv
+  succ_statistics_info_path: ../save/attack/
+  n_candidate: 30 
+  n_iter: 40  
+  is_enhance_data: False 
+  change_limts_factor: 0.5
+  last_attack_code_idx: 0 
+  last_attack_codes_nums: 0 
+  last_total_changes_nums: 0
+  last_succ_times: 0 
+  last_total_time: 0 
+  last_total_invotions: 0 
+  last_advs_nums: 0 
+  log_write_mode: w 
+random_struct:
+  log_path: ../save/attack/
+  adv_data_path: ../data/adv
+  succ_statistics_info_path: ../save/attack/
+  n_candidate: 1 
+  n_iter: 1200  
+  is_enhance_data: False 
+  change_limts_factor: 0.5
+  last_attack_code_idx: 0 
+  last_attack_codes_nums: 0 
+  last_total_changes_nums: 0
+  last_succ_times: 0 
+  last_total_time: 0 
+  last_total_invotions: 0 
+  last_advs_nums: 0 
+  log_write_mode: w 
+new_struct:
+  log_path: ../save/attack/
+  adv_data_path: ../data/adv 
+  adv_nums: -1 
+  stage_choose: [1]
+  change_limts_factor: 0.5
+  mutation_probability: 0 
+  assign_attack_way: None 
+  attack_choose: [0]
+  stage1_factor: 10 
+  stage2_factor: 10 
+  stage2_gen_bound : 10 
+  n_candidate: 30 
+  n_iter: 40  
+  max_one_iter: 20 
+  topCommonTokens: 100 
+  is_enhance_data: False
+  last_attack_code_idx: 0 
+  last_attack_codes_nums: 0 
+  last_succ_times: 0 
+  last_total_time: 0 
+  last_total_invotions: 0 
+  last_total_changes_nums: 0
+  last_advs_nums: 0 
+  log_write_mode: w 
